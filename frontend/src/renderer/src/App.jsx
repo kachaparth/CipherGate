@@ -26,17 +26,15 @@ export default function DashboardLayout() {
           {menuItems.map((item) => (
             <button
               key={item.name}
-              onClick={() =>  {setActive(item.name);
-                  if(item.name ==  'File Integrity')
-                  {
-                    setShow('Integrity');
-                  }
-                  else if(item.name == 'File Transfer')
-                  {
-                    setShow('FileTransfer');
-                  }
-              } }
-              className={`flex items-center space-x-4 p-4 w-full text-left ${active === item.name ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
+              onClick={() => {
+                setActive(item.name);
+                if (item.name === 'File Integrity') {
+                  setShow('Integrity');
+                } else if (item.name === 'File Transfer') {
+                  setShow('FileTransfer');
+                }
+              }}
+              className={`flex items-center space-x-4 p-4 w-full text-left cursor-pointer transition duration-300 ${active === item.name ? 'bg-gray-800' : 'hover:bg-gray-700'}`}
             >
               <item.icon size={20} />
               <span>{item.name}</span>
@@ -44,7 +42,7 @@ export default function DashboardLayout() {
           ))}
         </nav>
         <div className="p-4 mt-auto">
-          <button className="flex items-center space-x-4 w-full text-left hover:bg-gray-800 p-4">
+          <button className="flex items-center space-x-4 w-full text-left hover:bg-gray-700 p-4 cursor-pointer">
             <Settings size={20} />
             <span>Settings</span>
           </button>
@@ -75,10 +73,8 @@ export default function DashboardLayout() {
         {/* Content Area */}
         <section className="flex-1 p-6 bg-gray-50">
           <div className="h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
-               
-            {show == "FileTransfer" ? <FileTransfer/> : <></> }
-            {show == "Integrity" ? <Integrity/> : <></>}
-            
+            {show === 'FileTransfer' && <FileTransfer />}
+            {show === 'Integrity' && <Integrity />}
           </div>
         </section>
       </main>
