@@ -64,7 +64,7 @@ export default function DashboardLayout() {
         <section className="flex-1 p-6 bg-gray-50">
           <div className="h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
                
-         
+             <fileTransfer/>
              <Integrity/>
    
           </div>

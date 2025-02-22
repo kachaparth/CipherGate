@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Integrity() {
+function fileTransfer() {
     const [files, setFiles] = useState([]);
     const [mode, setMode] = useState(''); // 'sender' or 'receiver'
 
