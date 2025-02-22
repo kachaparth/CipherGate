@@ -20,8 +20,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
-    "@tailwindcss/vite": "^4.0.8",
-    "lucide-react": "^0.475.0"
+    "@tailwindcss/vite": "^4.0.8"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^2.0.0",
