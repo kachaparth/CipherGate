@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle } from 'lucide-react';
 import Integrity from './integrity';
@@ -22,7 +23,7 @@ export default function DashboardLayout() {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white flex flex-col">
-        <div className="p-6 text-lg font-semibold ">CipherGate</div>
+        <div className="p-6 text-lg font-semibold">CipherGate</div>
         <nav className="flex-1">
           {menuItems.map((item) => (
             <button
@@ -39,7 +40,7 @@ export default function DashboardLayout() {
                   else if(item.name == 'Network Sniffing')
                     {
                       setShow('NetworkSniffing');
-                    }
+                    }
               } }
               className={`flex items-center cursor-pointer space-x-4 p-4 w-full text-left ${active === item.name ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
             >
@@ -83,7 +84,7 @@ export default function DashboardLayout() {
                
             {show == "FileTransfer" ? <FileTransfer/> : <></> }
             {show == "Integrity" ? <Integrity/> : <></>}
-            {show == "NetworkSniffing" ? <NetworkSniffing/> : <></>}
+            {show == "NetworkSniffing" ? <NetworkSniffing/> : <></>}
             
           </div>
         </section>
