@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle } from 'lucide-react';
 import Integrity from './integrity';
+import FileTransfer from './fileTransfer';
 
 export default function DashboardLayout() {
   const [active, setActive] = useState('Dashboard');
@@ -14,6 +15,8 @@ export default function DashboardLayout() {
     { name: 'Reports', icon: BarChart },
   ];
 
+  const [show, setShow] = useState('');
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -23,7 +26,16 @@ export default function DashboardLayout() {
           {menuItems.map((item) => (
             <button
               key={item.name}
-              onClick={() => setActive(item.name)}
+              onClick={() =>  {setActive(item.name);
+                  if(item.name ==  'File Integrity')
+                  {
+                    setShow('Integrity');
+                  }
+                  else if(item.name == 'File Transfer')
+                  {
+                    setShow('FileTransfer');
+                  }
+              } }
               className={`flex items-center space-x-4 p-4 w-full text-left ${active === item.name ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
             >
               <item.icon size={20} />
@@ -64,9 +76,9 @@ export default function DashboardLayout() {
         <section className="flex-1 p-6 bg-gray-50">
           <div className="h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
                
-             <fileTransfer/>
-             <Integrity/>
-   
+            {show == "FileTransfer" ? <FileTransfer/> : <></> }
+            {show == "Integrity" ? <Integrity/> : <></>}
+            
           </div>
         </section>
       </main>
