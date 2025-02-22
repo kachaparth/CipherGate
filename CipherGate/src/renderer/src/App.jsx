@@ -1,8 +1,36 @@
+import { useState } from 'react'
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
 
 function App() {
-  const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+  const [selectedFile, setSelectedFile] = useState(null)
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0])
+  }
+
+  const uploadFile = () => {
+    if (!selectedFile) {
+      console.error("No file selected!")
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('file', selectedFile)
+
+    fetch('http://localhost:8000/uploadFile', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+        return response.json()
+      })
+      .then((data) => console.log('Success:', data))
+      .catch((error) => console.error("Upload failed:", error))
+  }
 
   return (
     <>
@@ -21,12 +49,16 @@ function App() {
           </a>
         </div>
         <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
+          <a target="_blank" rel="noreferrer" onClick={() => window.electron.ipcRenderer.send('ping')}>
             Send IPC
           </a>
         </div>
+        <div className="action">
+          <input type="file" id="fileInput" onChange={handleFileChange} />
+          <button onClick={uploadFile}>Upload</button>
+        </div>
       </div>
-      <Versions></Versions>
+      <Versions />
     </>
   )
 }
