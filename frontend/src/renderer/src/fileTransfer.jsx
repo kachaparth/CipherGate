@@ -3,7 +3,7 @@ import { Upload } from 'lucide-react';
 
 function FileTransfer() {
     const [files, setFiles] = useState([]);
-    const [mode, setMode] = useState(''); 
+    const [mode, setMode] = useState('');
 
     const handleFileUpload = (event) => {
         const uploadedFiles = Array.from(event.target.files);
@@ -19,7 +19,7 @@ function FileTransfer() {
 
     return (
         <>
-            <div className="p-8 w-6xl flex flex-col items-center justify-center min-h-screen bg-gradient-to-br h-auto">
+            <div className="p-8 w-full flex flex-col items-center justify-center h-screen bg-gradient-to-br overflow-hidden">
                 {mode === '' ? (
                     <div className="flex space-x-48">
                         <button
