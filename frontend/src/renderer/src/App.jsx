@@ -1,15 +1,40 @@
 import { useState } from "react";
+import axios from "axios"
 
+import React from 'react'
 
 
 function App() {
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
+  const uploadFile = async () => {
+    if (!selectedFile) {
+      console.error("No file selected!");
+      return;
+    }
 
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await axios.post("http://localhost:8000/uploadFile", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      console.log("Success:", response.data);
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+  };
   return (
     <>
-  
-
+      <input type="file" id="fileInput" onChange={handleFileChange} />
+      <button onClick={uploadFile}>Upload</button>
+      
       <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
         Badge
       </span>
