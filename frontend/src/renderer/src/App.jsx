@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle } from 'lucide-react';
+import Integrity from './integrity';
 
 export default function DashboardLayout() {
   const [active, setActive] = useState('Dashboard');
 
   const menuItems = [
-    { name: 'Dashboard', icon: Home },
-    { name: 'Team', icon: Users },
-    { name: 'Projects', icon: Calendar },
-    { name: 'Calendar', icon: Calendar },
+    { name: 'File Integrity', icon: Home },
+    { name: 'Network Sniffing', icon: Users },
+    { name: 'File Transfer', icon: Calendar },
+    { name: 'Cloud Storage', icon: Calendar },
     { name: 'Documents', icon: FileText },
     { name: 'Reports', icon: BarChart },
   ];
@@ -17,7 +18,7 @@ export default function DashboardLayout() {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white flex flex-col">
-        <div className="p-6 text-lg font-semibold">Dashboard</div>
+        <div className="p-6 text-lg font-semibold">CipherGate</div>
         <nav className="flex-1">
           {menuItems.map((item) => (
             <button
@@ -62,7 +63,10 @@ export default function DashboardLayout() {
         {/* Content Area */}
         <section className="flex-1 p-6 bg-gray-50">
           <div className="h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
-            Content Area
+               
+         
+             <Integrity/>
+   
           </div>
         </section>
       </main>
