@@ -3,17 +3,17 @@ import { Upload } from 'lucide-react';
 
 function FileTransfer() {
     const [files, setFiles] = useState([]);
-    const [mode, setMode] = useState(''); // 'sender' or 'receiver'
+    const [mode, setMode] = useState(''); 
 
     const handleFileUpload = (event) => {
         const uploadedFiles = Array.from(event.target.files);
-        setFiles(uploadedFiles); // Overwrite previous files
+        setFiles(uploadedFiles);
     };
 
     const handleFolderUpload = (event) => {
         const uploadedFolder = Array.from(event.target.files);
         if (uploadedFolder.length > 0) {
-            setFiles([{ name: uploadedFolder[0].webkitRelativePath.split('/')[0] }]); // Show only folder name
+            setFiles([{ name: uploadedFolder[0].webkitRelativePath.split('/')[0] }]);
         }
     };
 

@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle } from 'lucide-react';
+import Integrity from './integrity';
+import FileTransfer from './fileTransfer';
 
+export default function DashboardLayout() {
+  const [active, setActive] = useState('Dashboard');
 
+  const menuItems = [
+    { name: 'File Integrity', icon: Home },
+    { name: 'Network Sniffing', icon: Users },
+    { name: 'File Transfer', icon: Calendar },
+    { name: 'Cloud Storage', icon: Calendar },
+    { name: 'Documents', icon: FileText },
+    { name: 'Reports', icon: BarChart },
+  ];
 
-function App() {
-
-
+  const [show, setShow] = useState('');
 
   return (
     <div className="flex h-screen bg-gray-100">
