@@ -5,7 +5,7 @@ import Integrity from './integrity';
 import FileTransfer from './fileTransfer';
 import NetworkSniffing from './networkSniffing';
 import CloudUpload from './cloud';
-
+import Vulnerability from './vulnerability';
 export default function DashboardLayout() {
   const [active, setActive] = useState('Dashboard');
 
@@ -14,7 +14,7 @@ export default function DashboardLayout() {
     { name: 'Network Sniffing', icon: Users },
     { name: 'File Transfer', icon: Calendar },
     { name: 'Cloud Storage', icon: Calendar },
-    { name: 'Documents', icon: FileText },
+    { name: 'Vulnerability', icon: FileText },
     { name: 'Reports', icon: BarChart },
   ];
 
@@ -46,6 +46,10 @@ export default function DashboardLayout() {
                    {
                     setShow('CloudUpload')
                    }
+                   else if(item.name == 'Vulnerability')
+                    {
+                     setShow('Vulnerability')
+                    }
               } }
               className={`flex items-center cursor-pointer space-x-4 p-4 w-full text-left ${active === item.name ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
             >
@@ -91,6 +95,7 @@ export default function DashboardLayout() {
             {show == "Integrity" ? <Integrity/> : <></>}
             {show == "NetworkSniffing" ? <NetworkSniffing/> : <></>}
             {show == "CloudUpload" ? <CloudUpload/> : <></>}
+            {show == "Vulnerability" ? <Vulnerability/> : <></>}
           </div>
         </section>
       </main>
