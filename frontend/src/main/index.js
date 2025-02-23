@@ -29,7 +29,7 @@ function createWindow() {
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
           "img-src 'self' data: blob: https://*; " +
           "font-src 'self' data: https://fonts.gstatic.com; " +
-          "connect-src 'self' http://localhost:* ws://localhost:* https://cloudbin-backend.onrender.com/ https://www.virustotal.com/api/v3/urls"
+          "connect-src 'self' http://localhost:* ws://localhost:* https://cloudbin-backend.onrender.com/ https://www.virustotal.com/api/v3/ "
         ],
       },
     });
