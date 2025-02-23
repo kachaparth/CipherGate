@@ -1,22 +1,34 @@
 import { useState, useEffect } from 'react';
-import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle } from 'lucide-react';
+import {
+  ShieldCheck, // File Integrity
+  Network, // Network Sniffing
+  FolderInput, // File Transfer
+  CloudUpload, // Cloud Storage
+  Bug, // Vulnerability
+  BarChart, // Reports
+  Settings,
+  Search,
+  Bell,
+  UserCircle,
+} from 'lucide-react';
 import Integrity from './integrity';
 import FileTransfer from './fileTransfer';
 import NetworkSniffing from './networkSniffing';
-import CloudUpload from './cloud';
+import CloudUploadComponent from './cloud';
 import Vulnerability from './vulnerability';
 
 export default function DashboardLayout() {
   const [active, setActive] = useState('Dashboard');
   const [show, setShow] = useState('');
 
+  // Updated menu items with relevant icons
   const menuItems = [
-    { name: 'File Integrity', icon: Home },
-    { name: 'Network Sniffing', icon: Users },
-    { name: 'File Transfer', icon: Calendar },
-    { name: 'Cloud Storage', icon: Calendar },
-    { name: 'Vulnerability', icon: FileText },
-    { name: 'Reports', icon: BarChart },
+    { name: 'File Integrity', icon: ShieldCheck },
+    { name: 'Network Sniffing', icon: Network },
+    { name: 'File Transfer', icon: FolderInput },
+    { name: 'Cloud Storage', icon: CloudUpload },
+    { name: 'Vulnerability', icon: Bug },
+    
   ];
 
   // Disable scrolling for specific components
@@ -109,7 +121,7 @@ export default function DashboardLayout() {
             {show === 'FileTransfer' && <FileTransfer />}
             {show === 'Integrity' && <Integrity />}
             {show === 'NetworkSniffing' && <NetworkSniffing />}
-            {show === 'CloudUpload' && <CloudUpload />}
+            {show === 'CloudUpload' && <CloudUploadComponent />}
             {show === 'Vulnerability' && <Vulnerability />}
           </div>
         </section>
