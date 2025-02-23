@@ -1,105 +1,125 @@
-import React, { useState } from 'react';
-import { FiFolder } from 'react-icons/fi';
+import React, { useState, useEffect } from "react";
+import crypto from "crypto-js";
 
-function Integrity() {
+const API_BASE_URL = "http://localhost:8000";
+
+const FileIntegrity = () => {
     const [files, setFiles] = useState([]);
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [uploading, setUploading] = useState(false);
+    const [fileHashes, setFileHashes] = useState({});
 
-    const handleFileSelection = (event) => {
-        const uploadedFiles = Array.from(event.target.files);
-        setSelectedFiles(uploadedFiles);
+    // Fetch stored files from backend
+    const fetchFiles = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/getAllFiles`);
+            const data = await response.json();
+            setFiles(data.files);
+        } catch (error) {
+            console.error("Error fetching files:", error);
+        }
     };
 
-    const uploadFilesToServer = async () => {
-        setUploading(true);
-        const uploaded = [];
+    // Generate SHA-256 hash for a file
+    const generateFileHash = async (file) => {
+        console.log("Generating a hash for = " + file)
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const wordArray = crypto.lib.WordArray.create(reader.result);
+                const hash = crypto.SHA256(wordArray).toString();
+                resolve(hash);
+            };
+            reader.onerror = (error) => reject(error);
+            reader.readAsArrayBuffer(file);
+        });
+    };
 
-        for (const file of selectedFiles) {
+    // Handle file upload
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        try {
+            const hash = await generateFileHash(file);
+            setFileHashes((prev) => ({ ...prev, [file.name]: hash }));
+
             const formData = new FormData();
             formData.append("file", file);
+            formData.append("hash", hash);
 
-            try {
-                const response = await fetch("http://localhost:8000/uploadFile", {
-                    method: "POST",
-                    body: formData,
-                });
-                const data = await response.json();
-                console.log("Upload Response:", data);
-                if (!data.error) {
-                    uploaded.push({
-                        name: file.name,
-                        hash: data.hash
-                    });
-                }
-            } catch (error) {
-                console.error("Error uploading file:", error);
+            const response = await fetch(`${API_BASE_URL}/uploadFile`, {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                fetchFiles();
+            } else {
+                console.error("Upload failed:", data.error);
             }
+        } catch (error) {
+            console.error("Error generating hash:", error);
         }
-
-        setFiles((prevFiles) => [...prevFiles, ...uploaded]);
-        setSelectedFiles([]); // Clear selected files after upload
-        setUploading(false);
     };
 
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            for (const file of files) {
+                if (fileHashes[file.path]) {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/checkIntegrity`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ filename: file.path, hash: fileHashes[file.path] }),
+                        });
+
+                        const data = await response.json();
+                        setFiles((prevFiles) =>
+                            prevFiles.map((f) =>
+                                f.path === file.path ? { ...f, integrity: data.integrity } : f
+                            )
+                        );
+                    } catch (error) {
+                        console.error("Error checking integrity:", error);
+                    }
+                }
+            }
+        }, 5000); 
+
+        return () => clearInterval(interval);
+    }, [files, fileHashes]);
+
     return (
-        <div className="bg-white p-6 rounded-lg w-6xl shadow-lg max-w-3xl mx-auto font-sans">
-            <h1 className="text-xl font-bold mb-6 text-gray-800">
-                {files.length === 0 ? "Enter the file you want to check!" : "Files uploaded for checking:"}
-            </h1>
+        <div className="p-4">
+            <h2 className="text-xl font-bold mb-4">File Integrity Checker</h2>
+            <input type="file" onChange={handleFileUpload} className="mb-4 p-2 border rounded" />
 
-            <div className="mb-4 text-center">
-                <label htmlFor="file-upload" className="cursor-pointer flex items-center justify-center gap-2 text-gray-600 hover:text-gray-700">
-                    <FiFolder className="text-3xl" />
-                    <span className="text-lg">Select file(s)</span>
-                </label>
-                <input 
-                    type="file" 
-                    id="file-upload" 
-                    onChange={handleFileSelection} 
-                    multiple 
-                    className="hidden"
-                />
-            </div>
-
-            {selectedFiles.length > 0 && (
-                <div className="text-center text-gray-600 mb-4">
-                    Selected files: {selectedFiles.map(f => f.name).join(", ")}
-                </div>
-            )}
-
-            {/* Upload Button */}
-            <div className="text-center mb-6">
-                <button 
-                    onClick={uploadFilesToServer} 
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                    disabled={uploading || selectedFiles.length === 0}
-                >
-                    {uploading ? "Uploading..." : "Upload File"}
-                </button>
-            </div>
-
-            {files.length === 0 ? (
-                <div className="bg-gray-100 p-4 border-dashed border-2 border-gray-300 rounded text-center text-gray-600">
-                    No files uploaded.
-                </div>
-            ) : (
-                <div className="mt-6">
-                    <h2 className="text-lg font-semibold mb-4 text-gray-800">Uploaded Files:</h2>
-                    <ul className="list-none p-0">
-                        {files.map((file, index) => (
-                            <li key={index} className="flex justify-between items-center py-2 border-b border-gray-200">
-                                <span className="mr-2">{index + 1}. {file.name}</span>
-                                <span className="text-sm text-gray-500">
-                                    Hash: {file.hash.substring(0, 10)}...
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            <table className="w-full border-collapse border border-gray-400">
+                <thead>
+                    <tr className="bg-gray-200">
+                        <th className="border border-gray-400 p-2">Filename</th>
+                        <th className="border border-gray-400 p-2">Stored Hash</th>
+                        <th className="border border-gray-400 p-2">Integrity Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {files.map((file) => (
+                        <tr key={file.id} className="text-center">
+                            <td className="border border-gray-400 p-2">{file.path}</td>
+                            <td className="border border-gray-400 p-2">{file.hash}</td>
+                            <td
+                                className={`border border-gray-400 p-2 font-bold ${
+                                    file.integrity === "OK" ? "text-green-500" : "text-red-500"
+                                }`}
+                            >
+                                {file.integrity}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
-}
+};
 
-export default Integrity;
+export default FileIntegrity;

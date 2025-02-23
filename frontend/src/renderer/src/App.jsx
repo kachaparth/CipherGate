@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle } from 'lucide-react';
+import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle, Cloud } from 'lucide-react';
 import Integrity from './integrity';
 import FileTransfer from './fileTransfer';
 import NetworkSniffing from './networkSniffing';
@@ -90,7 +90,7 @@ export default function DashboardLayout() {
             {show == "FileTransfer" ? <FileTransfer/> : <></> }
             {show == "Integrity" ? <Integrity/> : <></>}
             {show == "NetworkSniffing" ? <NetworkSniffing/> : <></>}
-            {show == "CloudUpload" ? <NetworkSniffing/> : <></>}
+            {show == "CloudUpload" ? <CloudUpload/> : <></>}
           </div>
         </section>
       </main>

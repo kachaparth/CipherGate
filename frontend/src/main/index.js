@@ -29,7 +29,7 @@ function createWindow() {
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
           "img-src 'self' data: blob: https://*; " +
           "font-src 'self' data: https://fonts.gstatic.com; " +
-          "connect-src 'self' http://localhost:* ws://localhost:*"
+          "connect-src 'self' http://localhost:* ws://localhost:* https://cloudbin-backend.onrender.com/"
         ],
       },
     });
@@ -66,7 +66,7 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
-
+  
   createWindow()
 
   app.on('activate', function () {
