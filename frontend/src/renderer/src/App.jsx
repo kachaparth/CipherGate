@@ -71,7 +71,7 @@ export default function DashboardLayout() {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white flex flex-col">
-        <div className="p-6 text-lg font-semibold">CipherGate</div>
+        <div className="px-9 p-6 text-3xl  font-semibold font-mono">CipherGate</div>
         <nav className="flex-1">
           {menuItems.map((item) => (
             <button
