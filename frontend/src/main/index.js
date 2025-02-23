@@ -29,7 +29,7 @@ function createWindow() {
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
           "img-src 'self' data: blob: https://*; " +
           "font-src 'self' data: https://fonts.gstatic.com; " +
-          "connect-src 'self' http://localhost:* ws://localhost:* https://cloudbin-backend.onrender.com/"
+          "connect-src 'self' http://localhost:* ws://localhost:* https://cloudbin-backend.onrender.com/ https://www.virustotal.com/api/v3/urls"
         ],
       },
     });
@@ -42,7 +42,6 @@ function createWindow() {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
-
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
