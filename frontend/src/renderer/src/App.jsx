@@ -1,13 +1,14 @@
-
-import { useState } from 'react';
-import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle, Cloud } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, UserCircle } from 'lucide-react';
 import Integrity from './integrity';
 import FileTransfer from './fileTransfer';
 import NetworkSniffing from './networkSniffing';
 import CloudUpload from './cloud';
 import Vulnerability from './vulnerability';
+
 export default function DashboardLayout() {
   const [active, setActive] = useState('Dashboard');
+  const [show, setShow] = useState('');
 
   const menuItems = [
     { name: 'File Integrity', icon: Home },
@@ -18,7 +19,41 @@ export default function DashboardLayout() {
     { name: 'Reports', icon: BarChart },
   ];
 
-  const [show, setShow] = useState('');
+  // Disable scrolling for specific components
+  useEffect(() => {
+    if (show === 'Vulnerability' || show === 'FileTransfer') {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [show]);
+
+  const handleMenuClick = (name) => {
+    setActive(name);
+    switch (name) {
+      case 'File Integrity':
+        setShow('Integrity');
+        break;
+      case 'File Transfer':
+        setShow('FileTransfer');
+        break;
+      case 'Network Sniffing':
+        setShow('NetworkSniffing');
+        break;
+      case 'Cloud Storage':
+        setShow('CloudUpload');
+        break;
+      case 'Vulnerability':
+        setShow('Vulnerability');
+        break;
+      default:
+        setShow('');
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -29,29 +64,10 @@ export default function DashboardLayout() {
           {menuItems.map((item) => (
             <button
               key={item.name}
-              onClick={() =>  {setActive(item.name);
-                  if(item.name ==  'File Integrity')
-                  {
-                    setShow('Integrity');
-                  }
-                  else if(item.name == 'File Transfer')
-                  {
-                    setShow('FileTransfer');
-                  }
-                  else if(item.name == 'Network Sniffing')
-                    {
-                      setShow('NetworkSniffing');
-                    }
-                   else if(item.name == 'Cloud Storage')
-                   {
-                    setShow('CloudUpload')
-                   }
-                   else if(item.name == 'Vulnerability')
-                    {
-                     setShow('Vulnerability')
-                    }
-              } }
-              className={`flex items-center cursor-pointer space-x-4 p-4 w-full text-left ${active === item.name ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
+              onClick={() => handleMenuClick(item.name)}
+              className={`flex items-center cursor-pointer space-x-4 p-4 w-full text-left ${
+                active === item.name ? 'bg-gray-800' : 'hover:bg-gray-800'
+              }`}
             >
               <item.icon size={20} />
               <span>{item.name}</span>
@@ -90,12 +106,11 @@ export default function DashboardLayout() {
         {/* Content Area */}
         <section className="flex-1 p-6 bg-gray-50">
           <div className="h-full border-dashed border-2 border-gray-300 flex items-center justify-center">
-               
-            {show == "FileTransfer" ? <FileTransfer/> : <></> }
-            {show == "Integrity" ? <Integrity/> : <></>}
-            {show == "NetworkSniffing" ? <NetworkSniffing/> : <></>}
-            {show == "CloudUpload" ? <CloudUpload/> : <></>}
-            {show == "Vulnerability" ? <Vulnerability/> : <></>}
+            {show === 'FileTransfer' && <FileTransfer />}
+            {show === 'Integrity' && <Integrity />}
+            {show === 'NetworkSniffing' && <NetworkSniffing />}
+            {show === 'CloudUpload' && <CloudUpload />}
+            {show === 'Vulnerability' && <Vulnerability />}
           </div>
         </section>
       </main>
