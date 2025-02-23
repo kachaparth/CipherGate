@@ -4,6 +4,7 @@ import { Home, Users, Calendar, FileText, BarChart, Settings, Search, Bell, User
 import Integrity from './integrity';
 import FileTransfer from './fileTransfer';
 import NetworkSniffing from './networkSniffing';
+import CloudUpload from './cloud';
 
 export default function DashboardLayout() {
   const [active, setActive] = useState('Dashboard');
@@ -41,6 +42,10 @@ export default function DashboardLayout() {
                     {
                       setShow('NetworkSniffing');
                     }
+                   else if(item.name == 'Cloud Storage')
+                   {
+                    setShow('CloudUpload')
+                   }
               } }
               className={`flex items-center cursor-pointer space-x-4 p-4 w-full text-left ${active === item.name ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
             >
@@ -85,7 +90,7 @@ export default function DashboardLayout() {
             {show == "FileTransfer" ? <FileTransfer/> : <></> }
             {show == "Integrity" ? <Integrity/> : <></>}
             {show == "NetworkSniffing" ? <NetworkSniffing/> : <></>}
-            
+            {show == "CloudUpload" ? <NetworkSniffing/> : <></>}
           </div>
         </section>
       </main>
